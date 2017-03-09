@@ -27,17 +27,27 @@ export class HeroDetailComponent implements OnInit {
 
     /*
     Do I need to unsubscribe?
-    The Router manages the observables it provides and localizes the subscriptions. The subscriptions are cleaned up when the component is destroyed, protecting against memory leaks, so we don't need to unsubscribe from the route params Observable.
+    The Router manages the observables it provides and localizes the subscriptions. The subscriptions 
+    are cleaned up when the component is destroyed, protecting against memory leaks,
+     so we don't need to unsubscribe from the route params Observable.
   */
     this.route.params
-      .switchMap((params: Params) => this.heroService.getHero(+params['id'])) // If the user re-navigates to this component while a getHero request is still inflight, switchMap cancels that old request before calling HeroService.getHero again.
+      .switchMap((params: Params) => this.heroService.getHero(+params['id'])) /// If the user re-navigates to this component while a getHero request is still inflight, switchMap cancels that old request before calling HeroService.getHero again.
       .subscribe(hero => this.hero = hero);
   }
+
+  save(): void {
+  this.heroService.update(this.hero)
+    .then(() => this.goBack());
+}
+
 
   goBack(): void {
     // Going back too far could take us out of the application. That's acceptable in a demo. We'd guard against it in a real application, perhaps with the CanDeactivate guard.// https://angular.io/docs/ts/latest/api/router/index/CanDeactivate-interface.html
     this.location.back();
   }
+
+
 
 }
 
